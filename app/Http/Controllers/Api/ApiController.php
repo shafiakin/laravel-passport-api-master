@@ -24,15 +24,16 @@ class ApiController extends Controller
      * @bodyParam name string required The name of the user. Example: Adetunji Phillip
      * @bodyParam email string required The email of the user. Example: phillip@email.com
      * @bodyParam password string required The password of the user. Example: 12345678
-     * 
+     *
      * @response {
      *  "name": "Adetunji Phillip",
      *  "email": "phillip@mail.com",
      * }
      */
-    
+
     // Register API (POST)
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -59,19 +60,20 @@ class ApiController extends Controller
     }
 
     /**
-     * Register
+     * Login
      *
      * @bodyParam email string required The email of the user. Example: sakinropo@gmail.com
      * @bodyParam password string required The password of the user. Example: 12345678
-     * 
+     *
      * @response {
      *  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
      * }
      */
 
     // Profile API (POST)
-    public function login(Request $request){
-        
+    public function login(Request $request)
+    {
+
         // Data validation
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
@@ -86,7 +88,7 @@ class ApiController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['message' => 'Invalid login credentials'], 401);
         }
-        
+
         $user = Auth::user();
         $token = $user->createToken('auth_token')->accessToken;
 
@@ -97,7 +99,8 @@ class ApiController extends Controller
         ]);
     }
     // Profile API (GET)
-    public function profile(){
+    public function profile()
+    {
         $user = Auth::user();
 
         return response()->json([
@@ -108,7 +111,8 @@ class ApiController extends Controller
 
     }
     // logout API (POST)
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $user = Auth::user();
         $user->tokens()->delete();
 
