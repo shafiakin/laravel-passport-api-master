@@ -1,4 +1,4 @@
-name: Endpoints
+name: Customers
 description: ''
 endpoints:
   -
@@ -6,15 +6,16 @@ endpoints:
       - POST
     uri: api/customers
     metadata:
-      groupName: Endpoints
+      groupName: Customers
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'Create a new customer.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -24,49 +25,81 @@ endpoints:
     bodyParameters:
       name:
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'The name of the customer.'
         required: true
-        example: eguy
+        example: 'John Doe'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
       email:
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        description: 'The email of the customer.'
         required: true
-        example: gkassulke@example.net
+        example: john@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
       phone:
         name: phone
-        description: 'Must not be greater than 20 characters.'
+        description: 'The phone number of the customer.'
         required: false
-        example: xjpmbkumhpc
+        example: 123-456-7890
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
       address:
         name: address
-        description: 'Must not be greater than 255 characters.'
+        description: 'The address of the customer.'
         required: false
-        example: gplrywubepavuwznvkjpkocmg
+        example: '123 Main St'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
     cleanBodyParameters:
-      name: eguy
-      email: gkassulke@example.net
-      phone: xjpmbkumhpc
-      address: gplrywubepavuwznvkjpkocmg
+      name: 'John Doe'
+      email: john@example.com
+      phone: 123-456-7890
+      address: '123 Main St'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "status": true,
+            "message": "Customer created Successfully",
+            "data": {
+              "id": 1,
+              "name": "John Doe",
+              "email": "john@example.com",
+              "phone": "123-456-7890",
+              "address": "123 Main St",
+              "created_at": "2024-05-30T00:00:00.000000Z",
+              "updated_at": "2024-05-30T00:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "name": ["The name field is required."],
+            "email": ["The email field is required."]
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODZkNjU0ODgyMThmYjE4ODdlYmYwMGU3YjQ2ODBmZGEyNThlYjZkNGJlM2Q1OWI1NzQ5M2Q2N2E5NDUyMGVmYzI5NDY5OTZkYTVhOWNiOTYiLCJpYXQiOjE3MTcwNTcxNzAuODk3NDQ2LCJuYmYiOjE3MTcwNTcxNzAuODk3NDQ5LCJleHAiOjE3NDg1OTMxNzAuODc3Njk1LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.c-eMRHXs1dEzQzvoD8VKqp2Z8CYitsUrLYAQgYSM2uNX00b03llc0d00nTWZnGAkpCRTASfkrjdCyhcuUyBsmnyn7eSPQg3DqZCkQ-ETcb5PVbXvRxKS1eFsR5IKr4fLTXonwgz09YxULA6ac2I9al4JNMggFbBmHwo7rxFvJOnV-4og-Z_xm-0SuIGg7_wLBDQFKi_rz1yhDgwsXtCtTlJIVpLARKxWKFwplqy-TNBDyR1OZizUadbZNqu_xnsB1Tw1A1iWLMu51TtnQntHZB9dodbcEQK_DKtd30c1QMH4NKwHhumA9WjZzMxGIcOQAKyNeyNUT0H0LYhw6f1WPuyUJwtoMY70z0qw479tfSvoKoc_aprx7OAw-L81nXCOaW-xRRZ7_oJx2pdeIf_RgHM95rOcSlKIy8bnTo5zCz6cT0ZZsiPQcWeXfMXCyl7X9sLbWmfuBszFRudMq5E-ApTYjQTvNEjR0aEMsczHrVwu_qDzNzajAzVvBg6OjxK_QHaf4pbSSMs0Z8JwEyTv6ZG5QIj3PZezCIKzmToA_AC0U4QLxzxKtcCoY4ABYS514quOdzXka9sql0634daxyUKNXnkJEU9V0LNrv1JzF5qrlwqERxRDCJeU51FdM60LJ0Mxp_QBq5higC0sf5WZgo2dbSEpOtR-M9rw4Qsh-04'
     controller: null
     method: null
     route: null
@@ -76,15 +109,16 @@ endpoints:
       - GET
     uri: api/customers
     metadata:
-      groupName: Endpoints
+      groupName: Customers
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'List all customers.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -96,16 +130,30 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "message": "Record found",
+            "data": [
+              {
+                "id": 1,
+                "name": "John Doe",
+                "email": "john@example.com",
+                "phone": "123-456-7890",
+                "address": "123 Main St",
+                "created_at": "2024-05-30T00:00:00.000000Z",
+                "updated_at": "2024-05-30T00:00:00.000000Z"
+              }
+            ]
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODZkNjU0ODgyMThmYjE4ODdlYmYwMGU3YjQ2ODBmZGEyNThlYjZkNGJlM2Q1OWI1NzQ5M2Q2N2E5NDUyMGVmYzI5NDY5OTZkYTVhOWNiOTYiLCJpYXQiOjE3MTcwNTcxNzAuODk3NDQ2LCJuYmYiOjE3MTcwNTcxNzAuODk3NDQ5LCJleHAiOjE3NDg1OTMxNzAuODc3Njk1LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.c-eMRHXs1dEzQzvoD8VKqp2Z8CYitsUrLYAQgYSM2uNX00b03llc0d00nTWZnGAkpCRTASfkrjdCyhcuUyBsmnyn7eSPQg3DqZCkQ-ETcb5PVbXvRxKS1eFsR5IKr4fLTXonwgz09YxULA6ac2I9al4JNMggFbBmHwo7rxFvJOnV-4og-Z_xm-0SuIGg7_wLBDQFKi_rz1yhDgwsXtCtTlJIVpLARKxWKFwplqy-TNBDyR1OZizUadbZNqu_xnsB1Tw1A1iWLMu51TtnQntHZB9dodbcEQK_DKtd30c1QMH4NKwHhumA9WjZzMxGIcOQAKyNeyNUT0H0LYhw6f1WPuyUJwtoMY70z0qw479tfSvoKoc_aprx7OAw-L81nXCOaW-xRRZ7_oJx2pdeIf_RgHM95rOcSlKIy8bnTo5zCz6cT0ZZsiPQcWeXfMXCyl7X9sLbWmfuBszFRudMq5E-ApTYjQTvNEjR0aEMsczHrVwu_qDzNzajAzVvBg6OjxK_QHaf4pbSSMs0Z8JwEyTv6ZG5QIj3PZezCIKzmToA_AC0U4QLxzxKtcCoY4ABYS514quOdzXka9sql0634daxyUKNXnkJEU9V0LNrv1JzF5qrlwqERxRDCJeU51FdM60LJ0Mxp_QBq5higC0sf5WZgo2dbSEpOtR-M9rw4Qsh-04'
     controller: null
     method: null
     route: null
@@ -115,15 +163,16 @@ endpoints:
       - GET
     uri: 'api/customers/{id}'
     metadata:
-      groupName: Endpoints
+      groupName: Customers
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'Show a single customer.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -131,13 +180,13 @@ endpoints:
         name: id
         description: 'The ID of the customer.'
         required: true
-        example: dolorem
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
     cleanUrlParameters:
-      id: dolorem
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -145,16 +194,37 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "message": "Customer's Record found",
+            "data": {
+              "id": 1,
+              "name": "John Doe",
+              "email": "john@example.com",
+              "phone": "123-456-7890",
+              "address": "123 Main St",
+              "created_at": "2024-05-30T00:00:00.000000Z",
+              "updated_at": "2024-05-30T00:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Customer not found"
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODZkNjU0ODgyMThmYjE4ODdlYmYwMGU3YjQ2ODBmZGEyNThlYjZkNGJlM2Q1OWI1NzQ5M2Q2N2E5NDUyMGVmYzI5NDY5OTZkYTVhOWNiOTYiLCJpYXQiOjE3MTcwNTcxNzAuODk3NDQ2LCJuYmYiOjE3MTcwNTcxNzAuODk3NDQ5LCJleHAiOjE3NDg1OTMxNzAuODc3Njk1LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.c-eMRHXs1dEzQzvoD8VKqp2Z8CYitsUrLYAQgYSM2uNX00b03llc0d00nTWZnGAkpCRTASfkrjdCyhcuUyBsmnyn7eSPQg3DqZCkQ-ETcb5PVbXvRxKS1eFsR5IKr4fLTXonwgz09YxULA6ac2I9al4JNMggFbBmHwo7rxFvJOnV-4og-Z_xm-0SuIGg7_wLBDQFKi_rz1yhDgwsXtCtTlJIVpLARKxWKFwplqy-TNBDyR1OZizUadbZNqu_xnsB1Tw1A1iWLMu51TtnQntHZB9dodbcEQK_DKtd30c1QMH4NKwHhumA9WjZzMxGIcOQAKyNeyNUT0H0LYhw6f1WPuyUJwtoMY70z0qw479tfSvoKoc_aprx7OAw-L81nXCOaW-xRRZ7_oJx2pdeIf_RgHM95rOcSlKIy8bnTo5zCz6cT0ZZsiPQcWeXfMXCyl7X9sLbWmfuBszFRudMq5E-ApTYjQTvNEjR0aEMsczHrVwu_qDzNzajAzVvBg6OjxK_QHaf4pbSSMs0Z8JwEyTv6ZG5QIj3PZezCIKzmToA_AC0U4QLxzxKtcCoY4ABYS514quOdzXka9sql0634daxyUKNXnkJEU9V0LNrv1JzF5qrlwqERxRDCJeU51FdM60LJ0Mxp_QBq5higC0sf5WZgo2dbSEpOtR-M9rw4Qsh-04'
     controller: null
     method: null
     route: null
@@ -164,15 +234,16 @@ endpoints:
       - PUT
     uri: 'api/customers/{id}'
     metadata:
-      groupName: Endpoints
+      groupName: Customers
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'Update an existing customer.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -180,60 +251,102 @@ endpoints:
         name: id
         description: 'The ID of the customer.'
         required: true
-        example: sed
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
     cleanUrlParameters:
-      id: sed
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       name:
         name: name
-        description: 'Must not be greater than 255 characters.'
-        required: true
-        example: v
+        description: 'The name of the customer.'
+        required: false
+        example: 'John Doe'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
       email:
         name: email
-        description: ''
+        description: 'The email of the customer.'
         required: false
-        example: null
+        example: john@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
       phone:
         name: phone
-        description: 'Must not be greater than 20 characters.'
+        description: 'The phone number of the customer.'
         required: false
-        example: giwvejoheqrsqouq
+        example: 123-456-7890
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
       address:
         name: address
-        description: 'Must not be greater than 255 characters.'
+        description: 'The address of the customer.'
         required: false
-        example: oyvjdebvrmpnqjbse
+        example: '123 Main St'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
     cleanBodyParameters:
-      name: v
-      phone: giwvejoheqrsqouq
-      address: oyvjdebvrmpnqjbse
+      name: 'John Doe'
+      email: john@example.com
+      phone: 123-456-7890
+      address: '123 Main St'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "status": true,
+            "message": "Customer updated Successfully",
+            "data": {
+              "id": 1,
+              "name": "John Doe",
+              "email": "john@example.com",
+              "phone": "123-456-7890",
+              "address": "123 Main St",
+              "created_at": "2024-05-30T00:00:00.000000Z",
+              "updated_at": "2024-05-30T00:00:00.000000Z"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "name": ["The name field is required."],
+            "email": ["The email field is required."]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Customer not found"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODZkNjU0ODgyMThmYjE4ODdlYmYwMGU3YjQ2ODBmZGEyNThlYjZkNGJlM2Q1OWI1NzQ5M2Q2N2E5NDUyMGVmYzI5NDY5OTZkYTVhOWNiOTYiLCJpYXQiOjE3MTcwNTcxNzAuODk3NDQ2LCJuYmYiOjE3MTcwNTcxNzAuODk3NDQ5LCJleHAiOjE3NDg1OTMxNzAuODc3Njk1LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.c-eMRHXs1dEzQzvoD8VKqp2Z8CYitsUrLYAQgYSM2uNX00b03llc0d00nTWZnGAkpCRTASfkrjdCyhcuUyBsmnyn7eSPQg3DqZCkQ-ETcb5PVbXvRxKS1eFsR5IKr4fLTXonwgz09YxULA6ac2I9al4JNMggFbBmHwo7rxFvJOnV-4og-Z_xm-0SuIGg7_wLBDQFKi_rz1yhDgwsXtCtTlJIVpLARKxWKFwplqy-TNBDyR1OZizUadbZNqu_xnsB1Tw1A1iWLMu51TtnQntHZB9dodbcEQK_DKtd30c1QMH4NKwHhumA9WjZzMxGIcOQAKyNeyNUT0H0LYhw6f1WPuyUJwtoMY70z0qw479tfSvoKoc_aprx7OAw-L81nXCOaW-xRRZ7_oJx2pdeIf_RgHM95rOcSlKIy8bnTo5zCz6cT0ZZsiPQcWeXfMXCyl7X9sLbWmfuBszFRudMq5E-ApTYjQTvNEjR0aEMsczHrVwu_qDzNzajAzVvBg6OjxK_QHaf4pbSSMs0Z8JwEyTv6ZG5QIj3PZezCIKzmToA_AC0U4QLxzxKtcCoY4ABYS514quOdzXka9sql0634daxyUKNXnkJEU9V0LNrv1JzF5qrlwqERxRDCJeU51FdM60LJ0Mxp_QBq5higC0sf5WZgo2dbSEpOtR-M9rw4Qsh-04'
     controller: null
     method: null
     route: null
@@ -243,15 +356,16 @@ endpoints:
       - DELETE
     uri: 'api/customers/{id}'
     metadata:
-      groupName: Endpoints
+      groupName: Customers
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'Delete a customer.'
       description: ''
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -259,21 +373,42 @@ endpoints:
         name: id
         description: 'The ID of the customer.'
         required: true
-        example: maiores
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
     cleanUrlParameters:
-      id: maiores
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "message": "Customer deleted successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+            "message": "Customer not found"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODZkNjU0ODgyMThmYjE4ODdlYmYwMGU3YjQ2ODBmZGEyNThlYjZkNGJlM2Q1OWI1NzQ5M2Q2N2E5NDUyMGVmYzI5NDY5OTZkYTVhOWNiOTYiLCJpYXQiOjE3MTcwNTcxNzAuODk3NDQ2LCJuYmYiOjE3MTcwNTcxNzAuODk3NDQ5LCJleHAiOjE3NDg1OTMxNzAuODc3Njk1LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.c-eMRHXs1dEzQzvoD8VKqp2Z8CYitsUrLYAQgYSM2uNX00b03llc0d00nTWZnGAkpCRTASfkrjdCyhcuUyBsmnyn7eSPQg3DqZCkQ-ETcb5PVbXvRxKS1eFsR5IKr4fLTXonwgz09YxULA6ac2I9al4JNMggFbBmHwo7rxFvJOnV-4og-Z_xm-0SuIGg7_wLBDQFKi_rz1yhDgwsXtCtTlJIVpLARKxWKFwplqy-TNBDyR1OZizUadbZNqu_xnsB1Tw1A1iWLMu51TtnQntHZB9dodbcEQK_DKtd30c1QMH4NKwHhumA9WjZzMxGIcOQAKyNeyNUT0H0LYhw6f1WPuyUJwtoMY70z0qw479tfSvoKoc_aprx7OAw-L81nXCOaW-xRRZ7_oJx2pdeIf_RgHM95rOcSlKIy8bnTo5zCz6cT0ZZsiPQcWeXfMXCyl7X9sLbWmfuBszFRudMq5E-ApTYjQTvNEjR0aEMsczHrVwu_qDzNzajAzVvBg6OjxK_QHaf4pbSSMs0Z8JwEyTv6ZG5QIj3PZezCIKzmToA_AC0U4QLxzxKtcCoY4ABYS514quOdzXka9sql0634daxyUKNXnkJEU9V0LNrv1JzF5qrlwqERxRDCJeU51FdM60LJ0Mxp_QBq5higC0sf5WZgo2dbSEpOtR-M9rw4Qsh-04'
     controller: null
     method: null
     route: null

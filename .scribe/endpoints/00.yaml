@@ -1,7 +1,5 @@
 name: Authentication
-description: |-
-
-  APIs for user authentication
+description: ''
 endpoints:
   -
     httpMethods:
@@ -9,12 +7,10 @@ endpoints:
     uri: api/register
     metadata:
       groupName: Authentication
-      groupDescription: |-
-
-        APIs for user authentication
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: Register
+      title: 'Register a new user.'
       description: ''
       authenticated: false
       custom: []
@@ -60,11 +56,29 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 200
+        status: 201
         content: |-
           {
-           "name": "Adetunji Phillip",
-           "email": "phillip@mail.com",
+           "message": "User registered successfully",
+           "status": true,
+           "user": {
+             "id": 1,
+             "name": "Adetunji Phillip",
+             "email": "phillip@mail.com",
+             "created_at": "2024-05-30T00:00:00.000000Z",
+             "updated_at": "2024-05-30T00:00:00.000000Z"
+           }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "name": ["The name field is required."],
+            "email": ["The email field is required."],
+            "password": ["The password field is required."]
           }
         headers: []
         description: ''
@@ -81,12 +95,10 @@ endpoints:
     uri: api/login
     metadata:
       groupName: Authentication
-      groupDescription: |-
-
-        APIs for user authentication
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: Register
+      title: Login
       description: ''
       authenticated: false
       custom: []
@@ -125,7 +137,28 @@ endpoints:
         status: 200
         content: |-
           {
-           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+           "message": "Login successful",
+           "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+           "token_type": "Bearer"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "email": ["The email field is required."],
+            "password": ["The password field is required."]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 401
+        content: |-
+          {
+            "message": "Invalid login credentials"
           }
         headers: []
         description: ''
@@ -142,12 +175,10 @@ endpoints:
     uri: api/profile
     metadata:
       groupName: Authentication
-      groupDescription: |-
-
-        APIs for user authentication
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: "Get the authenticated user's profile."
       description: ''
       authenticated: false
       custom: []
@@ -163,13 +194,21 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+           "status": true,
+           "message": "User profile information",
+           "data": {
+             "id": 1,
+             "name": "Adetunji Phillip",
+             "email": "phillip@mail.com",
+             "created_at": "2024-05-30T00:00:00.000000Z",
+             "updated_at": "2024-05-30T00:00:00.000000Z"
+           }
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -183,12 +222,10 @@ endpoints:
     uri: api/logout
     metadata:
       groupName: Authentication
-      groupDescription: |-
-
-        APIs for user authentication
+      groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
+      title: 'Logout the authenticated user.'
       description: ''
       authenticated: false
       custom: []
@@ -204,13 +241,14 @@ endpoints:
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+           "status": true,
+           "message": "Logout successful"
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth: []

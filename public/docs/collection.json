@@ -10,17 +10,17 @@
     ],
     "info": {
         "name": "Laravel",
-        "_postman_id": "e5d2428b-599d-4b29-b2ee-d71c4366f79f",
+        "_postman_id": "dc81988c-4de5-4e75-a237-3548e18b5960",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
     "item": [
         {
             "name": "Authentication",
-            "description": "\nAPIs for user authentication",
+            "description": "",
             "item": [
                 {
-                    "name": "Register",
+                    "name": "Register a new user.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -51,14 +51,20 @@
                     "response": [
                         {
                             "header": [],
-                            "code": 200,
-                            "body": "{\n \"name\": \"Adetunji Phillip\",\n \"email\": \"phillip@mail.com\",\n}",
+                            "code": 201,
+                            "body": "{\n \"message\": \"User registered successfully\",\n \"status\": true,\n \"user\": {\n   \"id\": 1,\n   \"name\": \"Adetunji Phillip\",\n   \"email\": \"phillip@mail.com\",\n   \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n   \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"name\": [\"The name field is required.\"],\n  \"email\": [\"The email field is required.\"],\n  \"password\": [\"The password field is required.\"]\n}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "Register",
+                    "name": "Login",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -90,13 +96,25 @@
                         {
                             "header": [],
                             "code": 200,
-                            "body": "{\n \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}",
+                            "body": "{\n \"message\": \"Login successful\",\n \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n \"token_type\": \"Bearer\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"email\": [\"The email field is required.\"],\n  \"password\": [\"The password field is required.\"]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"message\": \"Invalid login credentials\"\n}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "GET api\/profile",
+                    "name": "Get the authenticated user's profile.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -123,28 +141,15 @@
                     },
                     "response": [
                         {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"status\": true,\n \"message\": \"User profile information\",\n \"data\": {\n   \"id\": 1,\n   \"name\": \"Adetunji Phillip\",\n   \"email\": \"phillip@mail.com\",\n   \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n   \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n }\n}",
                             "name": ""
                         }
                     ]
                 },
                 {
-                    "name": "GET api\/logout",
+                    "name": "Logout the authenticated user.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -171,22 +176,9 @@
                     },
                     "response": [
                         {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"status\": true,\n \"message\": \"Logout successful\"\n}",
                             "name": ""
                         }
                     ]
@@ -194,11 +186,63 @@
             ]
         },
         {
-            "name": "Endpoints",
+            "name": "Customer Management",
             "description": "",
             "item": [
                 {
-                    "name": "POST api\/customers",
+                    "name": "Get a customer with their orders.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/customers\/:id\/orders",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/customers\/:id\/orders",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "19",
+                                    "description": "The ID of the customer."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"status\": true,\n \"message\": \"Customer and Orders retrieved successfully\",\n \"data\": {\n   \"customer\": {\n     \"id\": 1,\n     \"name\": \"John Doe\",\n     \"email\": \"john@example.com\",\n     \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n     \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n   },\n   \"orders\": [\n     {\n       \"id\": 1,\n       \"customer_id\": 1,\n       \"product\": \"Product A\",\n       \"quantity\": 2,\n       \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n       \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n     },\n     {\n       \"id\": 2,\n       \"customer_id\": 1,\n       \"product\": \"Product B\",\n       \"quantity\": 1,\n       \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n       \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n     }\n   ]\n }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n \"message\": \"Customer not found\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Customers",
+            "description": "",
+            "item": [
+                {
+                    "name": "Create a new customer.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -219,17 +263,27 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"eguy\",\"email\":\"gkassulke@example.net\",\"phone\":\"xjpmbkumhpc\",\"address\":\"gplrywubepavuwznvkjpkocmg\"}"
+                            "raw": "{\"name\":\"John Doe\",\"email\":\"john@example.com\",\"phone\":\"123-456-7890\",\"address\":\"123 Main St\"}"
                         },
-                        "description": "",
-                        "auth": {
-                            "type": "noauth"
-                        }
+                        "description": ""
                     },
-                    "response": []
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"status\": true,\n  \"message\": \"Customer created Successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"address\": \"123 Main St\",\n    \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n    \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"name\": [\"The name field is required.\"],\n  \"email\": [\"The email field is required.\"]\n}",
+                            "name": ""
+                        }
+                    ]
                 },
                 {
-                    "name": "GET api\/customers",
+                    "name": "List all customers.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -249,6 +303,191 @@
                             }
                         ],
                         "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Record found\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\",\n      \"phone\": \"123-456-7890\",\n      \"address\": \"123 Main St\",\n      \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n      \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n    }\n  ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Show a single customer.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/customers\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/customers\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the customer."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Customer's Record found\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"address\": \"123 Main St\",\n    \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n    \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Customer not found\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update an existing customer.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/customers\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/customers\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the customer."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"John Doe\",\"email\":\"john@example.com\",\"phone\":\"123-456-7890\",\"address\":\"123 Main St\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"status\": true,\n  \"message\": \"Customer updated Successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"address\": \"123 Main St\",\n    \"created_at\": \"2024-05-30T00:00:00.000000Z\",\n    \"updated_at\": \"2024-05-30T00:00:00.000000Z\"\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"name\": [\"The name field is required.\"],\n  \"email\": [\"The email field is required.\"]\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Customer not found\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a customer.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/customers\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/customers\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the customer."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"message\": \"Customer deleted successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n  \"message\": \"Customer not found\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Orders",
+            "description": "",
+            "item": [
+                {
+                    "name": "Display a listing of orders.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/orders",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/orders"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
                         "description": "",
                         "auth": {
                             "type": "noauth"
@@ -277,19 +516,50 @@
                     ]
                 },
                 {
-                    "name": "GET api\/customers\/{id}",
+                    "name": "Store a newly created order in storage.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/customers\/:id",
+                            "path": "api\/orders",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/customers\/:id",
+                            "raw": "{{baseUrl}}\/api\/orders"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"customer_id\":1,\"order_date\":\"2024-05-30\",\"status\":\"completed\",\"total\":\"100.00\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Display the specified order.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/orders\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/orders\/:id",
                             "variable": [
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "dolorem",
-                                    "description": "The ID of the customer."
+                                    "value": "1",
+                                    "description": "The ID of the order."
                                 }
                             ]
                         },
@@ -333,19 +603,19 @@
                     ]
                 },
                 {
-                    "name": "PUT api\/customers\/{id}",
+                    "name": "Update the specified order in storage.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/customers\/:id",
+                            "path": "api\/orders\/:id",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/customers\/:id",
+                            "raw": "{{baseUrl}}\/api\/orders\/:id",
                             "variable": [
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "sed",
-                                    "description": "The ID of the customer."
+                                    "value": "1",
+                                    "description": "The ID of the order."
                                 }
                             ]
                         },
@@ -362,7 +632,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"v\",\"phone\":\"giwvejoheqrsqouq\",\"address\":\"oyvjdebvrmpnqjbse\"}"
+                            "raw": "{\"customer_id\":1,\"order_date\":\"2024-05-30\",\"status\":\"completed\",\"total\":\"150.00\"}"
                         },
                         "description": "",
                         "auth": {
@@ -372,19 +642,19 @@
                     "response": []
                 },
                 {
-                    "name": "DELETE api\/customers\/{id}",
+                    "name": "Remove the specified order from storage.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/customers\/:id",
+                            "path": "api\/orders\/:id",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/customers\/:id",
+                            "raw": "{{baseUrl}}\/api\/orders\/:id",
                             "variable": [
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "maiores",
-                                    "description": "The ID of the customer."
+                                    "value": "1",
+                                    "description": "The ID of the order."
                                 }
                             ]
                         },
@@ -411,6 +681,12 @@
         }
     ],
     "auth": {
-        "type": "noauth"
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
     }
 }

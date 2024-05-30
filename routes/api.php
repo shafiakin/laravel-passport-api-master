@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\OrderController;
 
 
 // Open Routes
@@ -22,6 +23,10 @@ Route::group([
     Route::get('/customers/{id}', [CustomerController::class, 'show']);
     Route::put('/customers/{id}', [CustomerController::class, 'update']);
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+    Route::get('/customers/{id}/orders', [CustomerController::class, 'getCustomerWithOrders']);
+
+
+    Route::apiResource('orders', OrderController::class);
 });
 
 

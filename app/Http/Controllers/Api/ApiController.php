@@ -8,31 +8,40 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
-
-/**
- * @group Authentication
- *
- * APIs for user authentication
- */
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmail; // Import the welcome email Mailable class
 
 class ApiController extends Controller
 {
     /**
-     * Register
+     * Register a new user.
      *
+     * @group Authentication
+     * 
      * @bodyParam name string required The name of the user. Example: Adetunji Phillip
      * @bodyParam email string required The email of the user. Example: phillip@email.com
      * @bodyParam password string required The password of the user. Example: 12345678
      * 
-     * @response {
-     *  "name": "Adetunji Phillip",
-     *  "email": "phillip@mail.com",
+     * @response 201 {
+     *  "message": "User registered successfully",
+     *  "status": true,
+     *  "user": {
+     *    "id": 1,
+     *    "name": "Adetunji Phillip",
+     *    "email": "phillip@mail.com",
+     *    "created_at": "2024-05-30T00:00:00.000000Z",
+     *    "updated_at": "2024-05-30T00:00:00.000000Z"
+     *  }
+     * }
+     * 
+     * @response 400 {
+     *   "name": ["The name field is required."],
+     *   "email": ["The email field is required."],
+     *   "password": ["The password field is required."]
      * }
      */
-    
-    // Register API (POST)
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -50,28 +59,41 @@ class ApiController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+        // Send Welcome Email
+        Mail::to($user->email)->send(new WelcomeEmail($user));
+
         return response()->json([
             "message" => "User registered successfully",
             "status" => true,
             'user' => $user
         ], 201);
-
     }
 
     /**
-     * Register
+     * Login
      *
+     * @group Authentication
+     * 
      * @bodyParam email string required The email of the user. Example: sakinropo@gmail.com
      * @bodyParam password string required The password of the user. Example: 12345678
      * 
      * @response {
-     *  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+     *  "message": "Login successful",
+     *  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+     *  "token_type": "Bearer"
+     * }
+     * 
+     * @response 400 {
+     *   "email": ["The email field is required."],
+     *   "password": ["The password field is required."]
+     * }
+     * 
+     * @response 401 {
+     *   "message": "Invalid login credentials"
      * }
      */
-
-    // Profile API (POST)
-    public function login(Request $request){
-        
+    public function login(Request $request)
+    {
         // Data validation
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
@@ -86,7 +108,7 @@ class ApiController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['message' => 'Invalid login credentials'], 401);
         }
-        
+
         $user = Auth::user();
         $token = $user->createToken('auth_token')->accessToken;
 
@@ -96,8 +118,26 @@ class ApiController extends Controller
             'token_type' => 'Bearer',
         ]);
     }
-    // Profile API (GET)
-    public function profile(){
+
+    /**
+     * Get the authenticated user's profile.
+     *
+     * @group Authentication
+     * 
+     * @response {
+     *  "status": true,
+     *  "message": "User profile information",
+     *  "data": {
+     *    "id": 1,
+     *    "name": "Adetunji Phillip",
+     *    "email": "phillip@mail.com",
+     *    "created_at": "2024-05-30T00:00:00.000000Z",
+     *    "updated_at": "2024-05-30T00:00:00.000000Z"
+     *  }
+     * }
+     */
+    public function profile()
+    {
         $user = Auth::user();
 
         return response()->json([
@@ -105,10 +145,20 @@ class ApiController extends Controller
             "message" => 'User profile information',
             "data" => $user,
         ]);
-
     }
-    // logout API (POST)
-    public function logout(Request $request){
+
+    /**
+     * Logout the authenticated user.
+     *
+     * @group Authentication
+     * 
+     * @response {
+     *  "status": true,
+     *  "message": "Logout successful"
+     * }
+     */
+    public function logout(Request $request)
+    {
         $user = Auth::user();
         $user->tokens()->delete();
 
@@ -118,3 +168,4 @@ class ApiController extends Controller
         ]);
     }
 }
+

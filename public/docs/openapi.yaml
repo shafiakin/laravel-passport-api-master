@@ -9,18 +9,83 @@ servers:
 paths:
   /api/register:
     post:
-      summary: Register
-      operationId: register
+      summary: 'Register a new user.'
+      operationId: registerANewUser
       description: ''
       parameters: []
       responses:
-        200:
+        201:
           description: ''
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: "{\n \"name\": \"Adetunji Phillip\",\n \"email\": \"phillip@mail.com\",\n}"
+                type: object
+                example:
+                  message: 'User registered successfully'
+                  status: true
+                  user:
+                    id: 1
+                    name: 'Adetunji Phillip'
+                    email: phillip@mail.com
+                    created_at: '2024-05-30T00:00:00.000000Z'
+                    updated_at: '2024-05-30T00:00:00.000000Z'
+                properties:
+                  message:
+                    type: string
+                    example: 'User registered successfully'
+                  status:
+                    type: boolean
+                    example: true
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Adetunji Phillip'
+                      email:
+                        type: string
+                        example: phillip@mail.com
+                      created_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  name:
+                    - 'The name field is required.'
+                  email:
+                    - 'The email field is required.'
+                  password:
+                    - 'The password field is required.'
+                properties:
+                  name:
+                    type: array
+                    example:
+                      - 'The name field is required.'
+                    items:
+                      type: string
+                  email:
+                    type: array
+                    example:
+                      - 'The email field is required.'
+                    items:
+                      type: string
+                  password:
+                    type: array
+                    example:
+                      - 'The password field is required.'
+                    items:
+                      type: string
       tags:
         - Authentication
       requestBody:
@@ -49,8 +114,8 @@ paths:
       security: []
   /api/login:
     post:
-      summary: Register
-      operationId: register
+      summary: Login
+      operationId: login
       description: ''
       parameters: []
       responses:
@@ -61,11 +126,55 @@ paths:
               schema:
                 type: object
                 example:
-                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  message: 'Login successful'
+                  access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  token_type: Bearer
                 properties:
-                  token:
+                  message:
+                    type: string
+                    example: 'Login successful'
+                  access_token:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  token_type:
+                    type: string
+                    example: Bearer
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  email:
+                    - 'The email field is required.'
+                  password:
+                    - 'The password field is required.'
+                properties:
+                  email:
+                    type: array
+                    example:
+                      - 'The email field is required.'
+                    items:
+                      type: string
+                  password:
+                    type: array
+                    example:
+                      - 'The password field is required.'
+                    items:
+                      type: string
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Invalid login credentials'
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid login credentials'
       tags:
         - Authentication
       requestBody:
@@ -89,183 +198,754 @@ paths:
       security: []
   /api/profile:
     get:
-      summary: ''
-      operationId: getApiProfile
+      summary: "Get the authenticated user's profile."
+      operationId: getTheAuthenticatedUsersProfile
       description: ''
       parameters: []
       responses:
-        401:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: Unauthenticated.
+                  status: true
+                  message: 'User profile information'
+                  data:
+                    id: 1
+                    name: 'Adetunji Phillip'
+                    email: phillip@mail.com
+                    created_at: '2024-05-30T00:00:00.000000Z'
+                    updated_at: '2024-05-30T00:00:00.000000Z'
                 properties:
+                  status:
+                    type: boolean
+                    example: true
                   message:
                     type: string
-                    example: Unauthenticated.
+                    example: 'User profile information'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Adetunji Phillip'
+                      email:
+                        type: string
+                        example: phillip@mail.com
+                      created_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
       tags:
         - Authentication
       security: []
   /api/logout:
     get:
-      summary: ''
-      operationId: getApiLogout
+      summary: 'Logout the authenticated user.'
+      operationId: logoutTheAuthenticatedUser
       description: ''
       parameters: []
       responses:
-        401:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: Unauthenticated.
+                  status: true
+                  message: 'Logout successful'
                 properties:
+                  status:
+                    type: boolean
+                    example: true
                   message:
                     type: string
-                    example: Unauthenticated.
+                    example: 'Logout successful'
       tags:
         - Authentication
       security: []
-  /api/customers:
-    post:
-      summary: ''
-      operationId: postApiCustomers
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: eguy
-                email:
-                  type: string
-                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                  example: gkassulke@example.net
-                phone:
-                  type: string
-                  description: 'Must not be greater than 20 characters.'
-                  example: xjpmbkumhpc
-                address:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: gplrywubepavuwznvkjpkocmg
-              required:
-                - name
-                - email
-      security: []
+  '/api/customers/{id}/orders':
     get:
-      summary: ''
-      operationId: getApiCustomers
+      summary: 'Get a customer with their orders.'
+      operationId: getACustomerWithTheirOrders
       description: ''
       parameters: []
       responses:
-        401:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: Unauthenticated.
+                  status: true
+                  message: 'Customer and Orders retrieved successfully'
+                  data:
+                    customer:
+                      id: 1
+                      name: 'John Doe'
+                      email: john@example.com
+                      created_at: '2024-05-30T00:00:00.000000Z'
+                      updated_at: '2024-05-30T00:00:00.000000Z'
+                    orders:
+                      -
+                        id: 1
+                        customer_id: 1
+                        product: 'Product A'
+                        quantity: 2
+                        created_at: '2024-05-30T00:00:00.000000Z'
+                        updated_at: '2024-05-30T00:00:00.000000Z'
+                      -
+                        id: 2
+                        customer_id: 1
+                        product: 'Product B'
+                        quantity: 1
+                        created_at: '2024-05-30T00:00:00.000000Z'
+                        updated_at: '2024-05-30T00:00:00.000000Z'
                 properties:
+                  status:
+                    type: boolean
+                    example: true
                   message:
                     type: string
-                    example: Unauthenticated.
-      tags:
-        - Endpoints
-      security: []
-  '/api/customers/{id}':
-    get:
-      summary: ''
-      operationId: getApiCustomersId
-      description: ''
-      parameters: []
-      responses:
-        401:
+                    example: 'Customer and Orders retrieved successfully'
+                  data:
+                    type: object
+                    properties:
+                      customer:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'John Doe'
+                          email:
+                            type: string
+                            example: john@example.com
+                          created_at:
+                            type: string
+                            example: '2024-05-30T00:00:00.000000Z'
+                          updated_at:
+                            type: string
+                            example: '2024-05-30T00:00:00.000000Z'
+                      orders:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            customer_id: 1
+                            product: 'Product A'
+                            quantity: 2
+                            created_at: '2024-05-30T00:00:00.000000Z'
+                            updated_at: '2024-05-30T00:00:00.000000Z'
+                          -
+                            id: 2
+                            customer_id: 1
+                            product: 'Product B'
+                            quantity: 1
+                            created_at: '2024-05-30T00:00:00.000000Z'
+                            updated_at: '2024-05-30T00:00:00.000000Z'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            customer_id:
+                              type: integer
+                              example: 1
+                            product:
+                              type: string
+                              example: 'Product A'
+                            quantity:
+                              type: integer
+                              example: 2
+                            created_at:
+                              type: string
+                              example: '2024-05-30T00:00:00.000000Z'
+                            updated_at:
+                              type: string
+                              example: '2024-05-30T00:00:00.000000Z'
+        404:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: Unauthenticated.
+                  message: 'Customer not found'
                 properties:
                   message:
                     type: string
-                    example: Unauthenticated.
+                    example: 'Customer not found'
       tags:
-        - Endpoints
-      security: []
-    put:
-      summary: ''
-      operationId: putApiCustomersId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: v
-                email:
-                  type: string
-                  description: ''
-                  example: null
-                phone:
-                  type: string
-                  description: 'Must not be greater than 20 characters.'
-                  example: giwvejoheqrsqouq
-                address:
-                  type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: oyvjdebvrmpnqjbse
-              required:
-                - name
-      security: []
-    delete:
-      summary: ''
-      operationId: deleteApiCustomersId
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      security: []
+        - 'Customer Management'
     parameters:
       -
         in: path
         name: id
         description: 'The ID of the customer.'
-        example: dolorem
+        example: 19
         required: true
         schema:
-          type: string
+          type: integer
+  /api/customers:
+    post:
+      summary: 'Create a new customer.'
+      operationId: createANewCustomer
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Customer created Successfully'
+                  data:
+                    id: 1
+                    name: 'John Doe'
+                    email: john@example.com
+                    phone: 123-456-7890
+                    address: '123 Main St'
+                    created_at: '2024-05-30T00:00:00.000000Z'
+                    updated_at: '2024-05-30T00:00:00.000000Z'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Customer created Successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'John Doe'
+                      email:
+                        type: string
+                        example: john@example.com
+                      phone:
+                        type: string
+                        example: 123-456-7890
+                      address:
+                        type: string
+                        example: '123 Main St'
+                      created_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  name:
+                    - 'The name field is required.'
+                  email:
+                    - 'The email field is required.'
+                properties:
+                  name:
+                    type: array
+                    example:
+                      - 'The name field is required.'
+                    items:
+                      type: string
+                  email:
+                    type: array
+                    example:
+                      - 'The email field is required.'
+                    items:
+                      type: string
+      tags:
+        - Customers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the customer.'
+                  example: 'John Doe'
+                email:
+                  type: string
+                  description: 'The email of the customer.'
+                  example: john@example.com
+                phone:
+                  type: string
+                  description: 'The phone number of the customer.'
+                  example: 123-456-7890
+                address:
+                  type: string
+                  description: 'The address of the customer.'
+                  example: '123 Main St'
+              required:
+                - name
+                - email
+    get:
+      summary: 'List all customers.'
+      operationId: listAllCustomers
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Record found'
+                  data:
+                    -
+                      id: 1
+                      name: 'John Doe'
+                      email: john@example.com
+                      phone: 123-456-7890
+                      address: '123 Main St'
+                      created_at: '2024-05-30T00:00:00.000000Z'
+                      updated_at: '2024-05-30T00:00:00.000000Z'
+                properties:
+                  message:
+                    type: string
+                    example: 'Record found'
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'John Doe'
+                        email: john@example.com
+                        phone: 123-456-7890
+                        address: '123 Main St'
+                        created_at: '2024-05-30T00:00:00.000000Z'
+                        updated_at: '2024-05-30T00:00:00.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'John Doe'
+                        email:
+                          type: string
+                          example: john@example.com
+                        phone:
+                          type: string
+                          example: 123-456-7890
+                        address:
+                          type: string
+                          example: '123 Main St'
+                        created_at:
+                          type: string
+                          example: '2024-05-30T00:00:00.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2024-05-30T00:00:00.000000Z'
+      tags:
+        - Customers
+  '/api/customers/{id}':
+    get:
+      summary: 'Show a single customer.'
+      operationId: showASingleCustomer
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: "Customer's Record found"
+                  data:
+                    id: 1
+                    name: 'John Doe'
+                    email: john@example.com
+                    phone: 123-456-7890
+                    address: '123 Main St'
+                    created_at: '2024-05-30T00:00:00.000000Z'
+                    updated_at: '2024-05-30T00:00:00.000000Z'
+                properties:
+                  message:
+                    type: string
+                    example: "Customer's Record found"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'John Doe'
+                      email:
+                        type: string
+                        example: john@example.com
+                      phone:
+                        type: string
+                        example: 123-456-7890
+                      address:
+                        type: string
+                        example: '123 Main St'
+                      created_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Customer not found'
+                properties:
+                  message:
+                    type: string
+                    example: 'Customer not found'
+      tags:
+        - Customers
+    put:
+      summary: 'Update an existing customer.'
+      operationId: updateAnExistingCustomer
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Customer updated Successfully'
+                  data:
+                    id: 1
+                    name: 'John Doe'
+                    email: john@example.com
+                    phone: 123-456-7890
+                    address: '123 Main St'
+                    created_at: '2024-05-30T00:00:00.000000Z'
+                    updated_at: '2024-05-30T00:00:00.000000Z'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Customer updated Successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'John Doe'
+                      email:
+                        type: string
+                        example: john@example.com
+                      phone:
+                        type: string
+                        example: 123-456-7890
+                      address:
+                        type: string
+                        example: '123 Main St'
+                      created_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-05-30T00:00:00.000000Z'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  name:
+                    - 'The name field is required.'
+                  email:
+                    - 'The email field is required.'
+                properties:
+                  name:
+                    type: array
+                    example:
+                      - 'The name field is required.'
+                    items:
+                      type: string
+                  email:
+                    type: array
+                    example:
+                      - 'The email field is required.'
+                    items:
+                      type: string
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Customer not found'
+                properties:
+                  message:
+                    type: string
+                    example: 'Customer not found'
+      tags:
+        - Customers
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the customer.'
+                  example: 'John Doe'
+                email:
+                  type: string
+                  description: 'The email of the customer.'
+                  example: john@example.com
+                phone:
+                  type: string
+                  description: 'The phone number of the customer.'
+                  example: 123-456-7890
+                address:
+                  type: string
+                  description: 'The address of the customer.'
+                  example: '123 Main St'
+    delete:
+      summary: 'Delete a customer.'
+      operationId: deleteACustomer
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Customer deleted successfully'
+                properties:
+                  message:
+                    type: string
+                    example: 'Customer deleted successfully'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Customer not found'
+                properties:
+                  message:
+                    type: string
+                    example: 'Customer not found'
+      tags:
+        - Customers
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the customer.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/orders:
+    get:
+      summary: 'Display a listing of orders.'
+      operationId: displayAListingOfOrders
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Orders
+      security: []
+    post:
+      summary: 'Store a newly created order in storage.'
+      operationId: storeANewlyCreatedOrderInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'The ID of the customer.'
+                  example: 1
+                order_date:
+                  type: date
+                  description: 'The date of the order.'
+                  example: '2024-05-30'
+                status:
+                  type: string
+                  description: 'The status of the order.'
+                  example: completed
+                total:
+                  type: numeric
+                  description: 'The total amount of the order.'
+                  example: '100.00'
+              required:
+                - customer_id
+                - order_date
+                - status
+                - total
+      security: []
+  '/api/orders/{id}':
+    get:
+      summary: 'Display the specified order.'
+      operationId: displayTheSpecifiedOrder
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Orders
+      security: []
+    put:
+      summary: 'Update the specified order in storage.'
+      operationId: updateTheSpecifiedOrderInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: 'The ID of the customer.'
+                  example: 1
+                order_date:
+                  type: date
+                  description: 'The date of the order.'
+                  example: '2024-05-30'
+                status:
+                  type: string
+                  description: 'The status of the order.'
+                  example: completed
+                total:
+                  type: numeric
+                  description: 'The total amount of the order.'
+                  example: '150.00'
+              required:
+                - customer_id
+                - order_date
+                - status
+                - total
+      security: []
+    delete:
+      summary: 'Remove the specified order from storage.'
+      operationId: removeTheSpecifiedOrderFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Orders
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the order.'
+        example: 1
+        required: true
+        schema:
+          type: integer
 tags:
   -
     name: Authentication
-    description: "\nAPIs for user authentication"
-  -
-    name: Endpoints
     description: ''
+  -
+    name: 'Customer Management'
+    description: ''
+  -
+    name: Customers
+    description: ''
+  -
+    name: Orders
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []

@@ -21,4 +21,10 @@ class Customer extends Model
         'address',
     ];
 
+    // Define the relationship with orders
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }
